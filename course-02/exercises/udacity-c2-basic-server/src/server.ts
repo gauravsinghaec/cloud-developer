@@ -64,6 +64,14 @@ import { Car, cars as cars_list } from "./cars";
   // Endpoint to GET a list of cars
   // it should be filterable by make with a query paramater
   app.get("/cars", async (req: Request, res: Response) => {
+    const { make } = req.query;
+    console.log(
+      make,
+      cars.filter((car) => car.make === make)
+    );
+    if (make) {
+      return res.status(200).send(cars.filter((car) => car.make === make));
+    }
     return res.status(200).send(cars);
   });
 
