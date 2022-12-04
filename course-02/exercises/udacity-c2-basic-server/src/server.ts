@@ -78,7 +78,14 @@ import { Car, cars as cars_list } from "./cars";
   // Endpoint to get a specific car
   // it should require id
   // it should fail gracefully if no matching car is found
-
+  app.get("/cars/:id", async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const filterCars = cars.filter((car) => car.id === Number(id));
+    if (filterCars.length === 0) {
+      return res.status(404).send("No matching car found");
+    }
+    return res.status(200).send(filterCars);
+  });
   /// Endpoint to post a new car to our list
   // it should require id, type, model, and cost
 
