@@ -38,7 +38,7 @@ import path from "path";
         const newURL = await filterImageFromURL(image_url);
         console.log("Filter image completed and here is the path: ", newURL);
         const directoryPath = newURL.split("/").slice(0, -1).join("/");
-        res.sendFile(newURL, async (err) => {
+        res.status(200).sendFile(newURL, async (err) => {
           if (err) {
             console.log(err);
             throw err;
@@ -59,7 +59,7 @@ import path from "path";
       }
     } catch (error) {
       console.log(error);
-      res.send("Failed to process the image");
+      res.status(422).send({ message: "Failed to process the image" });
     }
   });
 
