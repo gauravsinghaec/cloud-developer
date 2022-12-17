@@ -28,19 +28,21 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
   const newItem = {
     imageId: itemId,
     groupId,
+    timestamp: (new Date()).toLocaleString(),
+    ...JSON.parse(event.body)
   }
   // TODO: Create an image
   await docClient.put({
     TableName: imagesTable,
     Item: newItem
-  })
+  }).promise()
 
   return {
     statusCode: 201,
     headers: {
       'Access-Control-Allow-Origin': '*'
     },
-    body: JSON.stringify(newItem)
+    body: JSON.stringify({newItem})
   }
 }
 
