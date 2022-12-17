@@ -3,7 +3,6 @@ service:
 
 plugins:
   - serverless-webpack
-  - serverless-reqvalidator-plugin
   - serverless-aws-documentation
 
 provider:
@@ -67,12 +66,10 @@ functions:
           method: post
           path: groups
           cors: true
-          reqValidatorName: RequestBodyValidator
-          documentation:
-            summary: Create a new group
-            description: Create a new group
-            requestModels:
-              'application/json': GroupRequest
+          request:
+            # Schema that will be used to validate incoming requests
+            schema:
+              application/json: ${file(models/create-group-request.json)}          
 
   GetImages:
     handler: src/lambda/http/getImages.handler
@@ -89,12 +86,10 @@ functions:
           method: post
           path: groups/{groupId}/images
           cors: true
-          reqValidatorName: RequestBodyValidator
-          documentation:
-            summary: Create a new Image
-            description: Create a new Image
-            requestModels:
-              'application/json': ImageRequest
+          request:
+            # Schema that will be used to validate incoming requests
+            schema:
+              application/json: ${file(models/create-image-request.json)}
 
 resources:
   Resources:
