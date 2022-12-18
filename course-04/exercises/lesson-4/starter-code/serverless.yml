@@ -320,3 +320,7 @@ resources:
     #             AWS: '*'
     #           Action: 'es:*'
     #           Resource: '*'
+                
+                # An error occurred: ImagesSearch - Enable fine-grained access control or apply a restrictive access policy to your domain (Service: AWSElasticsearch; Status Code: 400; Error Code: ValidationException; Request ID: be22c5b0-f1fe-470b-9386-d2ad09762c65; Proxy: null).
+                # Action: !Sub 'Fn::Join: ["", [ "arn:aws:iam", {"Ref": "AWS::AccountId"}, ":role/service-role/${self:service.name}-${self:provider.stage}-${opt:region, self:provider.region}-lambdaRole"]'
+                # Resource: !Sub 'Fn::Join: ["", [ "arn:aws:es:${self:provider.region}:", {"Ref": "AWS::AccountId"}, ":domain/images-search-${self:provider.stage}/*"]'
