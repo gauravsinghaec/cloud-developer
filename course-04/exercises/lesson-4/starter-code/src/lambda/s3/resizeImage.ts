@@ -46,7 +46,7 @@ export async function resizeImage(imageURL) {
     console.log("Resize started");
     const data: Buffer = response.Body as Buffer;
     const photo = await Jimp.read(data);
-    await photo.resize(256, Jimp.AUTO);
+    photo.resize(256, Jimp.AUTO);
     console.log("Resize completed");
 
     const convertedBuffer = await photo.getBufferAsync(Jimp.AUTO);
