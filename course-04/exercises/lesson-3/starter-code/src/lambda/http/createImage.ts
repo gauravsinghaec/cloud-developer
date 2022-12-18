@@ -28,24 +28,30 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
   const newItem = {
     imageId: itemId,
     groupId,
-    timestamp: (new Date()).toLocaleString(),
+    timestamp: new Date().toISOString(),
     ...JSON.parse(event.body)
   }
-  // TODO: Create an image
-  await docClient.put({
-    TableName: imagesTable,
-    Item: newItem
-  }).promise()
+  const item = await createImage(newItem)
 
   return {
     statusCode: 201,
     headers: {
       'Access-Control-Allow-Origin': '*'
     },
-    body: JSON.stringify({newItem})
+    body: JSON.stringify(item)
   }
 }
+const createImage =async (item)=>{
+  console.log('Storing new item in db: ', item)
+  
+  await docClient.put({
+    TableName: imagesTable,
+    Item: item
+  }).promise()
+  console.log('Storing new item completed: ')
+  return item
 
+}
 async function groupExists(groupId: string) {
   const result = await docClient
     .get({
