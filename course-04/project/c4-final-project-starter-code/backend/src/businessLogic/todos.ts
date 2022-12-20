@@ -65,12 +65,9 @@ export async function deleteTodo(
   }
   return await todoAccess.deleteTodo(userId, todoId)
 }
-export function createAttachmentPresignedUrl(
-  todoId: string,
-  userId: string
-): string {
+export function createAttachmentPresignedUrl(todoId: string): string {
   logger.info('Getting presigned URL')
 
-  const url = todoAccess.getPresigneURL(todoId, userId)
+  const url = todoAccess.getPresigneURL(todoId)
   return url
 }

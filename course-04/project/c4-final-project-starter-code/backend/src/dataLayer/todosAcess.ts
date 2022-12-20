@@ -125,9 +125,9 @@ export class TodosAccess {
       throw 'Failed to delete todos'
     }
   }
-  getPresigneURL(userId: string, todoId: string): string {
+  getPresigneURL(todoId: string): string {
     try {
-      return getUploadUrl(todoId, userId, this.bucketName, this.urlExpiration)
+      return getUploadUrl(todoId, this.bucketName, this.urlExpiration)
     } catch (err) {
       logger.error(err)
       throw 'Failed to delete todos'
