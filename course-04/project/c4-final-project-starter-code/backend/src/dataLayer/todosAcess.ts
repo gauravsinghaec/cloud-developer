@@ -86,8 +86,8 @@ export class TodosAccess {
   }
   async updateTodo(
     item: TodoUpdate,
-    todoId: string,
-    userId: string
+    userId: string,
+    todoId: string
   ): Promise<Boolean> {
     try {
       logger.info('Updating todo')
