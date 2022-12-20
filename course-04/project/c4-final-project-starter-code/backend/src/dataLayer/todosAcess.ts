@@ -70,13 +70,15 @@ export class TodosAccess {
   async createTodo(item: TodoItem): Promise<TodoItem> {
     logger.info('Creating todo')
     try {
-      await this.docClient.put({
-        TableName: this.todosTable,
-        Item: {
-          ...item,
-          attachmentUrl: `https://${this.bucketName}.s3.amazonaws.com/${item.todoId}`
-        }
-      })
+      await this.docClient
+        .put({
+          TableName: this.todosTable,
+          Item: {
+            ...item,
+            attachmentUrl: `https://${this.bucketName}.s3.amazonaws.com/${item.todoId}`
+          }
+        })
+        .promise()
       logger.info('New Todo is created')
       return item
     } catch (err) {
@@ -91,14 +93,16 @@ export class TodosAccess {
   ): Promise<Boolean> {
     try {
       logger.info('Updating todo')
-      await this.docClient.put({
-        TableName: this.todosTable,
-        Item: {
-          ...item,
-          todoId,
-          userId
-        }
-      })
+      await this.docClient
+        .put({
+          TableName: this.todosTable,
+          Item: {
+            ...item,
+            todoId,
+            userId
+          }
+        })
+        .promise()
       logger.info('Updated todo')
       return true
     } catch (err) {
@@ -108,13 +112,15 @@ export class TodosAccess {
   }
   async deleteTodo(userId: string, todoId: string): Promise<Boolean> {
     try {
-      await this.docClient.delete({
-        TableName: this.todosTable,
-        Key: {
-          todoId: { S: todoId },
-          userId: { S: userId }
-        }
-      })
+      await this.docClient
+        .delete({
+          TableName: this.todosTable,
+          Key: {
+            todoId: { S: todoId },
+            userId: { S: userId }
+          }
+        })
+        .promise()
       return true
     } catch (err) {
       logger.error(err)
