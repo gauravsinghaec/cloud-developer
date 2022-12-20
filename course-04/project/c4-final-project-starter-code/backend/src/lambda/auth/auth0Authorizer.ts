@@ -9,7 +9,7 @@ import { JwtPayload } from '../../auth/JwtPayload'
 
 const logger = createLogger('auth')
 
-// TODO: Provide a URL that can be used to download a certificate that can be used
+//  Provide a URL that can be used to download a certificate that can be used
 // to verify JWT token signature.
 // To get this URL you need to go to an Auth0 page -> Show Advanced Settings -> Endpoints -> JSON Web Key Set
 const jwksUrl =
@@ -18,10 +18,10 @@ const jwksUrl =
 export const handler = async (
   event: CustomAuthorizerEvent
 ): Promise<CustomAuthorizerResult> => {
-  logger.info('Authorizing a user', event.authorizationToken)
+  logger.info(`Authorizing a user: ${JSON.stringify(event.authorizationToken)}`)
   try {
     const jwtToken = await verifyToken(event.authorizationToken)
-    logger.info('User was authorized', jwtToken)
+    logger.info(`User was authorized: ${JSON.stringify(jwtToken)}`)
 
     return {
       principalId: jwtToken.sub,
@@ -37,6 +37,7 @@ export const handler = async (
       }
     }
   } catch (e) {
+    logger.error(e)
     logger.error('User not authorized', { error: e.message })
 
     return {
@@ -58,17 +59,19 @@ export const handler = async (
 async function verifyToken(authHeader: string): Promise<JwtPayload> {
   const token = getToken(authHeader)
   const jwt: Jwt = decode(token, { complete: true }) as Jwt
-  const keys = await Axios.get(jwksUrl).then((resp: any) => resp.body.keys)
-  // TODO: Implement token verification
+  const resp: any = await Axios.get(jwksUrl)
+  logger.info('verifyToken axios:', resp)
+  const keys = resp.data.keys
+  logger.info({ keys })
+  // Implement token verification
   // You should implement it similarly to how it was implemented for the exercise for the lesson 5
   // You can read more about how to do this here: https://auth0.com/blog/navigating-rs256-and-jwks/
   const signingKey = keys.find((key) => key.kid === jwt.header.kid)
-  if (keys[0].kid === jwt.header.kid) {
-  }
-  return verify(
-    token,
-    signingKey.publicKey || signingKey.rsaPublicKey
-  ) as JwtPayload
+  logger.info({ keys })
+
+  return verify(token, signingKey['x5c'], {
+    algorithms: ['RS256']
+  }) as JwtPayload
 }
 
 function getToken(authHeader: string): string {
