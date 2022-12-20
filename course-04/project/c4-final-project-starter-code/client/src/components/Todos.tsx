@@ -64,7 +64,7 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
     try {
       await deleteTodo(this.props.auth.getIdToken(), todoId)
       this.setState({
-        todos: this.state.todos.filter(todo => todo.todoId !== todoId)
+        todos: this.state.todos.filter((todo) => todo.todoId !== todoId)
       })
     } catch {
       alert('Todo deletion failed')
@@ -193,7 +193,16 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
                 </Button>
               </Grid.Column>
               {todo.attachmentUrl && (
-                <Image src={todo.attachmentUrl} size="small" wrapped />
+                <Image
+                  onError={(e: any) =>
+                    (e.target.src =
+                      'https://www.kindpng.com/picc/m/270-2707008_icons8-flat-todo-list-todo-svg-hd-png.png')
+                  }
+                  alt="Todo List"
+                  src={todo.attachmentUrl}
+                  size="small"
+                  wrapped
+                />
               )}
               <Grid.Column width={16}>
                 <Divider />
