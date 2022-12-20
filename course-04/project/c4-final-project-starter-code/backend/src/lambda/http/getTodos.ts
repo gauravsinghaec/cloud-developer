@@ -13,7 +13,7 @@ const logger = createLogger('getTodos')
 export const handler = middy(
   async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     const userId = getUserId(event)
-    logger.info('userid from token', userId)
+    logger.info(userId)
     const todos = await getTodosForUser(userId)
 
     return {

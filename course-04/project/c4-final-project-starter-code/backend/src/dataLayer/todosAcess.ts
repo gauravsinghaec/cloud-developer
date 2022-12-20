@@ -18,14 +18,15 @@ export class TodosAccess {
     private readonly bucketName = process.env.ATTACHMENT_S3_BUCKET,
     private readonly urlExpiration = process.env.SIGNED_URL_EXPIRATION
   ) {}
-  async getTodo(todoId: string): Promise<any> {
+  async getTodo(userId: string, todoId: string): Promise<any> {
     try {
       logger.info('Getting the given todo item')
       const result = await this.docClient
         .get({
           TableName: this.todosTable,
           Key: {
-            todoId
+            todoId,
+            userId
           }
         })
         .promise()
