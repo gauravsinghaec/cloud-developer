@@ -38,7 +38,7 @@ export async function updateTodo(
   todoId: string
 ): Promise<Boolean> {
   logger.info('Calling update todo')
-  const item = todoAccess.getTodo(userId, todoId)
+  const item = todoAccess.getTodo(todoId)
   if (!item) {
     logger.info('the todo item not found')
     createError(404, 'This todo item does not exist!')
@@ -58,7 +58,7 @@ export async function deleteTodo(
   todoId: string
 ): Promise<Boolean> {
   logger.info('Calling delete todo')
-  const item = todoAccess.getTodo(userId, todoId)
+  const item = todoAccess.getTodo(todoId)
   if (!item) {
     logger.info('the todo item not found')
     createError(404, 'This todo item does not exist!')

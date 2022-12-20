@@ -18,16 +18,14 @@ export class TodosAccess {
     private readonly bucketName = process.env.IMAGES_S3_BUCKET,
     private readonly urlExpiration = process.env.SIGNED_URL_EXPIRATION
   ) {}
-  async getTodo(userId: string, todoId: string): Promise<TodoItem> {
+  async getTodo(todoId: string): Promise<any> {
     try {
       logger.info('Getting the given todo item')
       const result = await this.docClient
-        .query({
+        .get({
           TableName: this.todosTable,
-          KeyConditionExpression: 'userId = :userId AND todoId = :todoId',
-          ExpressionAttributeValues: {
-            ':userId': userId,
-            ':todoId': todoId
+          Key: {
+            todoId
           }
         })
         .promise()
@@ -36,7 +34,7 @@ export class TodosAccess {
       if (!result) {
         logger.info('Todo item is not found')
       }
-      return result.Items[0] as TodoItem
+      return result
     } catch (err) {
       logger.error(err)
       throw 'Failed to get todos'
