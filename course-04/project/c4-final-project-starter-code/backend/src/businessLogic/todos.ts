@@ -25,7 +25,7 @@ export async function createTodo(
 
   logger.info('Calling create todo')
   const newItem = await todoAccess.createTodo({
-    id: todoId,
+    todoId,
     userId: userId,
     name: createTodoRequest.name,
     dueDate: createTodoRequest.dueDate,

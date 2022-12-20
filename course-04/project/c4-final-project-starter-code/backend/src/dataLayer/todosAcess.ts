@@ -71,6 +71,7 @@ export class TodosAccess {
         TableName: this.todosTable,
         Item: item
       })
+      logger.info('New Todo is created')
       return item
     } catch (err) {
       logger.error(err)
@@ -79,7 +80,7 @@ export class TodosAccess {
   }
   async updateTodo(
     item: TodoUpdate,
-    id: string,
+    todoId: string,
     userId: string
   ): Promise<Boolean> {
     try {
@@ -88,7 +89,7 @@ export class TodosAccess {
         TableName: this.todosTable,
         Item: {
           ...item,
-          id,
+          todoId,
           userId
         }
       })
@@ -104,7 +105,7 @@ export class TodosAccess {
       await this.docClient.delete({
         TableName: this.todosTable,
         Key: {
-          id: { S: todoId },
+          todoId: { S: todoId },
           userId: { S: userId }
         }
       })
