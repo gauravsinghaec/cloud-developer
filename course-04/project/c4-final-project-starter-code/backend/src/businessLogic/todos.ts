@@ -39,6 +39,7 @@ export async function updateTodo(
 ): Promise<Boolean> {
   logger.info('Calling update todo')
   const item = todoAccess.getTodo(userId, todoId)
+  logger.info(item)
   if (!item) {
     logger.info('the todo item not found')
     createError(404, 'This todo item does not exist!')

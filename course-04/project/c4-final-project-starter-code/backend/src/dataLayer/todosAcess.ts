@@ -92,13 +92,20 @@ export class TodosAccess {
     try {
       logger.info('Updating todo')
       await this.docClient
-        .put({
+        .update({
           TableName: this.todosTable,
-          Item: {
-            ...item,
+          Key: {
             todoId,
             userId
-          }
+          },
+          UpdateExpression:
+            'set name = :name, dueDate = :dueDate, done = :done ',
+          ExpressionAttributeValues: {
+            ':name': item.name,
+            ':dueDate': item.dueDate,
+            ':done': item.done
+          },
+          ReturnValues: 'ALL_NEW'
         })
         .promise()
       logger.info('Updated todo')
