@@ -99,11 +99,14 @@ export class TodosAccess {
             userId
           },
           UpdateExpression:
-            'set name = :name, dueDate = :dueDate, done = :done ',
+            'set #todo_name = :name, dueDate = :dueDate, done = :done ',
           ExpressionAttributeValues: {
             ':name': item.name,
             ':dueDate': item.dueDate,
             ':done': item.done
+          },
+          ExpressionAttributeNames: {
+            '#todo_name': 'name'
           },
           ReturnValues: 'ALL_NEW'
         })
