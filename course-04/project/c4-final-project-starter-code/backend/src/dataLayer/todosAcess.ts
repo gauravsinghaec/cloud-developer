@@ -15,7 +15,7 @@ export class TodosAccess {
     private readonly docClient: DocumentClient = createDynamoDBClient(),
     private readonly todosTable = process.env.TODOS_TABLE,
     private readonly createdAtIntex = process.env.TODOS_CREATED_AT_INDEX,
-    private readonly bucketName = process.env.IMAGES_S3_BUCKET,
+    private readonly bucketName = process.env.ATTACHMENT_S3_BUCKET,
     private readonly urlExpiration = process.env.SIGNED_URL_EXPIRATION
   ) {}
   async getTodo(todoId: string): Promise<any> {
@@ -66,7 +66,6 @@ export class TodosAccess {
     }
   }
   async createTodo(item: TodoItem): Promise<TodoItem> {
-    logger.info('Creating todo')
     try {
       await this.docClient
         .put({
