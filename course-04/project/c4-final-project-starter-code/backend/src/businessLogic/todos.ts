@@ -3,7 +3,7 @@ import { TodoItem } from '../models/TodoItem'
 import { CreateTodoRequest } from '../requests/CreateTodoRequest'
 import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
 import { createLogger } from '../utils/logger'
-import { bucketName, getUploadUrl } from '../helpers/attachmentUtils'
+import { getUploadUrl } from '../helpers/attachmentUtils'
 import * as uuid from 'uuid'
 import * as createError from 'http-errors'
 
@@ -21,7 +21,6 @@ export async function createTodo(
   userId: string
 ): Promise<TodoItem> {
   const todoId = uuid.v4()
-  const attachmentUrl = `https://${bucketName}.s3.amazonaws.com/${todoId}`
 
   logger.info('Calling create todo')
   const newItem = await todoAccess.createTodo({
@@ -30,8 +29,7 @@ export async function createTodo(
     name: createTodoRequest.name,
     dueDate: createTodoRequest.dueDate,
     done: false,
-    createdAt: new Date().toISOString(),
-    attachmentUrl
+    createdAt: new Date().toISOString()
   })
   return newItem
 }

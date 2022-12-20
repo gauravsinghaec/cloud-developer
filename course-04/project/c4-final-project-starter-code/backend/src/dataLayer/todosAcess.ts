@@ -13,7 +13,8 @@ export class TodosAccess {
   constructor(
     private readonly docClient: DocumentClient = createDynamoDBClient(),
     private readonly todosTable = process.env.TODOS_TABLE,
-    private readonly createdAtIntex = process.env.TODOS_CREATED_AT_INDEX
+    private readonly createdAtIntex = process.env.TODOS_CREATED_AT_INDEX,
+    private readonly bucketName = process.env.IMAGES_S3_BUCKET
   ) {}
   async getTodo(userId: string, todoId: string): Promise<TodoItem> {
     try {
@@ -69,7 +70,10 @@ export class TodosAccess {
     try {
       await this.docClient.put({
         TableName: this.todosTable,
-        Item: item
+        Item: {
+          ...item,
+          attachmentUrl: `https://${this.bucketName}.s3.amazonaws.com/${item.todoId}`
+        }
       })
       logger.info('New Todo is created')
       return item
