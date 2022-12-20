@@ -70,7 +70,8 @@ export function createAttachmentPresignedUrl(
   todoId: string,
   userId: string
 ): string {
-  logger.info('Calling delete todo')
-  const url = getUploadUrl(todoId, userId)
+  logger.info('Getting presigned URL')
+
+  const url = todoAccess.getPresigneURL(todoId, userId)
   return url
 }

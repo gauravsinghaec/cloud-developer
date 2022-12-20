@@ -4,6 +4,7 @@ import { DocumentClient } from 'aws-sdk/clients/dynamodb'
 import { createLogger } from '../utils/logger'
 import { TodoItem } from '../models/TodoItem'
 import { TodoUpdate } from '../models/TodoUpdate'
+import { getUploadUrl } from '../helpers/attachmentUtils'
 
 const XAWS = AWSXRay.captureAWS(AWS)
 
@@ -14,7 +15,8 @@ export class TodosAccess {
     private readonly docClient: DocumentClient = createDynamoDBClient(),
     private readonly todosTable = process.env.TODOS_TABLE,
     private readonly createdAtIntex = process.env.TODOS_CREATED_AT_INDEX,
-    private readonly bucketName = process.env.IMAGES_S3_BUCKET
+    private readonly bucketName = process.env.IMAGES_S3_BUCKET,
+    private readonly urlExpiration = process.env.SIGNED_URL_EXPIRATION
   ) {}
   async getTodo(userId: string, todoId: string): Promise<TodoItem> {
     try {
@@ -114,6 +116,14 @@ export class TodosAccess {
         }
       })
       return true
+    } catch (err) {
+      logger.error(err)
+      throw 'Failed to delete todos'
+    }
+  }
+  getPresigneURL(userId: string, todoId: string): string {
+    try {
+      return getUploadUrl(todoId, userId, this.bucketName, this.urlExpiration)
     } catch (err) {
       logger.error(err)
       throw 'Failed to delete todos'
