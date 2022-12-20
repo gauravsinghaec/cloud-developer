@@ -114,8 +114,8 @@ export class TodosAccess {
         .delete({
           TableName: this.todosTable,
           Key: {
-            todoId: { S: todoId },
-            userId: { S: userId }
+            todoId,
+            userId
           }
         })
         .promise()
