@@ -194,10 +194,9 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
               </Grid.Column>
               {todo.attachmentUrl && (
                 <Image
-                  onError={(e: any) =>
-                    (e.target.src =
-                      'https://www.kindpng.com/picc/m/270-2707008_icons8-flat-todo-list-todo-svg-hd-png.png')
-                  }
+                  onError={(e: any) => {
+                    e.target.style.display = 'none'
+                  }}
                   alt="Todo List"
                   src={todo.attachmentUrl}
                   size="small"
